@@ -1,0 +1,30 @@
+{
+    "name": "Python DevContainer",
+    "build": {
+        "dockerfile": "../Dockerfile",
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "MS-CEINTL.vscode-language-pack-ja",
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "charliermarsh.ruff",
+                "KevinRose.vsc-python-indent",
+                "oderwat.indent-rainbow",
+                "shardulm94.trailing-spaces",
+            ],
+            "settings": {
+                "editor.defaultFormatter": "charliermarsh.ruff",
+                "editor.formatOnSave": true,
+                "editor.rulers": [
+                    120
+                ],
+                "files.trimTrailingWhitespace": true,
+                "files.insertFinalNewline": true,
+                "files.trimFinalNewlines": true,
+                "window.zoomLevel": 2,
+            }
+        }
+    }
+}
