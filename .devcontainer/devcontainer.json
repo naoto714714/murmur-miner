@@ -12,7 +12,7 @@
                 "charliermarsh.ruff",
                 "KevinRose.vsc-python-indent",
                 "oderwat.indent-rainbow",
-                "shardulm94.trailing-spaces",
+                "shardulm94.trailing-spaces"
             ],
             "settings": {
                 "editor.defaultFormatter": "charliermarsh.ruff",
@@ -23,7 +23,7 @@
                 "files.trimTrailingWhitespace": true,
                 "files.insertFinalNewline": true,
                 "files.trimFinalNewlines": true,
-                "window.zoomLevel": 2,
+                "window.zoomLevel": 2
             }
         }
     }
