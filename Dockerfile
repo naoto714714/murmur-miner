@@ -4,7 +4,9 @@ WORKDIR /app
 
 RUN apt update && apt install -y \
     git \
-    curl
+    curl \
+    ffmpeg \
+    sox
 
 ENV POETRY_VIRTUALENVS_CREATE=false
 ENV POETRY_HOME=/etc/poetry
