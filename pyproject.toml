@@ -11,6 +11,10 @@ torch = "2.5.1"
 torchaudio = "2.5.1"
 silero-vad = "5.1.2"
 soundfile = "0.12.1"
+transformers = "4.46.2"
+accelerate = "1.1.1"
+numpy = "1.26.4"
+openai-whisper = "20240930"
 
 
 [build-system]
