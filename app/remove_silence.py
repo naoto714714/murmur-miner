@@ -10,4 +10,7 @@ def remove_silence(audio_file, output_folder):
 
     speech_timestamps = get_speech_timestamps(audio, model, sampling_rate=SAMPLING_RATE)
 
-    save_audio(f"{output_folder}/{audio_file.name}", collect_chunks(speech_timestamps, audio), SAMPLING_RATE)
+    output_path = f"{output_folder}/{audio_file.stem}.mp3"
+    save_audio(output_path, collect_chunks(speech_timestamps, audio), SAMPLING_RATE)
+
+    return output_path
