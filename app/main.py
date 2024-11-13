@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 from remove_silence import remove_silence
@@ -15,8 +16,10 @@ def main():
     for audio_file in INPUT_AUDIO_FOLDER.iterdir():
         if audio_file.is_file() and audio_file.suffix.lower() in AUDIO_EXTENSIONS:
             print("----------remove_silence----------")
-            output_path = remove_silence(audio_file, f"{OUTPUT_FOLDER}/{ONLY_SPEECH_FOLDER}")
+            output_path = os.path.join(OUTPUT_FOLDER, ONLY_SPEECH_FOLDER, f"{audio_file.stem}.mp3")
+            remove_silence(audio_file, output_path)
             print(output_path)
+
             print("----------speech_to_text----------")
             transcribed_text = speech_to_text(output_path)
             print(transcribed_text)
