@@ -4,13 +4,12 @@ from silero_vad import collect_chunks, get_speech_timestamps, load_silero_vad, r
 SAMPLING_RATE = 16000
 
 
-def remove_silence(audio_file, output_folder):
+def remove_silence(audio_file, output_path):
     model = load_silero_vad(onnx=False)
     audio = read_audio(audio_file, sampling_rate=SAMPLING_RATE)
 
     speech_timestamps = get_speech_timestamps(audio, model, sampling_rate=SAMPLING_RATE)
 
-    output_path = f"{output_folder}/{audio_file.stem}.mp3"
     save_audio(output_path, collect_chunks(speech_timestamps, audio), SAMPLING_RATE)
 
     return output_path
