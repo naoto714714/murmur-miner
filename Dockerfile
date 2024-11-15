@@ -8,14 +8,13 @@ RUN apt update && apt install -y \
     ffmpeg \
     sox
 
-ENV POETRY_VIRTUALENVS_CREATE=false
-ENV POETRY_HOME=/etc/poetry
-ENV PATH=${POETRY_HOME}/bin:${PATH}
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+# 参考：https://docs.astral.sh/uv/guides/integration/docker/#installing-uv
 
-RUN curl -sSL https://install.python-poetry.org | python3 -
+COPY pyproject.toml uv.lock README.md ./
+# README.mdもコピーしないと、uv syncでエラーが出る
 
-COPY pyproject.toml poetry.lock ./
-
-RUN poetry install --no-interaction
+RUN uv sync --frozen
+# --frozenは、uv.lockを更新しないようにするため
 
 COPY ./app .
