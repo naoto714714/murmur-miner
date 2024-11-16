@@ -3,17 +3,15 @@
 import torch
 from transformers import WhisperForConditionalGeneration, WhisperProcessor
 
-from main import SAMPLING_RATE
 
-
-def speech_to_text(audio):
+def speech_to_text(audio, sampling_rate):
     model_id = "kotoba-tech/kotoba-whisper-v2.0"
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
     processor = WhisperProcessor.from_pretrained(model_id)
     model = WhisperForConditionalGeneration.from_pretrained(model_id).to(device)
 
-    input_features = processor(audio, sampling_rate=SAMPLING_RATE, return_tensors="pt").input_features.to(device)
+    input_features = processor(audio, sampling_rate=sampling_rate, return_tensors="pt").input_features.to(device)
 
     generated_ids = model.generate(input_features)
     return processor.batch_decode(generated_ids, skip_special_tokens=True)[0]

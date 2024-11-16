@@ -14,10 +14,10 @@ def main():
     for audio_file in INPUT_AUDIO_FOLDER.iterdir():
         if audio_file.is_file() and audio_file.suffix.lower() in AUDIO_EXTENSIONS:
             print("----------remove_silence----------")
-            no_silence_audio = remove_silence(audio_file)
+            no_silence_audio = remove_silence(audio_file, SAMPLING_RATE)
 
             print("----------speech_to_text----------")
-            transcribed_text = speech_to_text(no_silence_audio)
+            transcribed_text = speech_to_text(no_silence_audio, SAMPLING_RATE)
             print(transcribed_text)
 
             print("----------summary----------")
