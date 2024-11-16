@@ -18,14 +18,14 @@ def main():
         sys.exit(1)
 
     for audio_file in audio_files:
-        print("----------remove_silence----------")
+        print(f"----------remove_silence: {audio_file}----------")
         no_silence_audio = remove_silence(audio_file, SAMPLING_RATE)
 
-        print("----------speech_to_text----------")
+        print(f"----------speech_to_text: {audio_file}----------")
         transcribed_text = speech_to_text(no_silence_audio, SAMPLING_RATE)
         print(transcribed_text)
 
-        print("----------summary----------")
+        print(f"----------summary: {audio_file}----------")
         summary_text = summary(transcribed_text)
         print(summary_text)
 
@@ -33,7 +33,7 @@ def main():
         with open(output_path, "w", encoding="utf-8") as f:
             f.write(summary_text)
 
-        print(f"----------{audio_file}: 完了----------")
+        print(f"----------完了: {audio_file}----------")
 
     sys.exit(0)
 
