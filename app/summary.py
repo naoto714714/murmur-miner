@@ -10,7 +10,7 @@ PROMPT = """
 """
 
 
-def summary(transcribed_text, output_path):
+def summary(transcribed_text):
     load_dotenv()
     token = os.getenv("API_TOKEN")
     url = "https://api.perplexity.ai/chat/completions"
@@ -39,9 +39,7 @@ def summary(transcribed_text, output_path):
     }
 
     response = requests.request("POST", url, json=payload, headers=headers)
+
     response_json = response.json()
     content = response_json["choices"][0]["message"]["content"]
-    with open(output_path, "w", encoding="utf-8") as f:
-        f.write(content)
-
     return content

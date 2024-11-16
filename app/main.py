@@ -1,4 +1,5 @@
-import os
+import logging
+import sys
 from pathlib import Path
 
 from remove_silence import remove_silence
@@ -6,30 +7,49 @@ from speech_to_text import speech_to_text
 from summary import summary
 
 INPUT_AUDIO_FOLDER = Path("/workspaces/MurmurMiner/input_audios")
-OUTPUT_FOLDER = Path("/workspaces/MurmurMiner/output_files")
-ONLY_SPEECH_FOLDER = "only_speech"
-SUMMARY_TEXT_FOLDER = "summary_text"
+OUTPUT_SUMMARY_FOLDER = Path("/workspaces/MurmurMiner/output_summaries")
 AUDIO_EXTENSIONS = [".mp3", ".wav", ".m4a"]
+SAMPLING_RATE = 16000
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+handler = logging.StreamHandler()
+handler.setLevel(logging.INFO)
+logger.addHandler(handler)
 
 
 def main():
-    for audio_file in INPUT_AUDIO_FOLDER.iterdir():
-        if audio_file.is_file() and audio_file.suffix.lower() in AUDIO_EXTENSIONS:
-            print("----------remove_silence----------")
-            output_path = os.path.join(OUTPUT_FOLDER, ONLY_SPEECH_FOLDER, f"{audio_file.stem}.mp3")
-            remove_silence(audio_file, output_path)
-            print(output_path)
+    audio_files = check_audio_files()
+    if not audio_files:
+        logger.warning("音声ファイルが見つかりません。入力可能なファイル形式: mp3, wav, m4a")
+        sys.exit(1)
 
-            print("----------speech_to_text----------")
-            transcribed_text = speech_to_text(output_path)
-            print(transcribed_text)
+    for audio_file in audio_files:
+        logger.info(f"----------remove_silence: {audio_file}----------")
+        no_silence_audio = remove_silence(audio_file, SAMPLING_RATE)
 
-            print("----------summary----------")
-            output_path = os.path.join(OUTPUT_FOLDER, SUMMARY_TEXT_FOLDER, f"{audio_file.stem}.txt")
-            summary_text = summary(transcribed_text, output_path)
-            print(summary_text)
+        logger.info(f"----------speech_to_text: {audio_file}----------")
+        transcribed_text = speech_to_text(no_silence_audio, SAMPLING_RATE)
+        logger.info(transcribed_text)
 
-            print("----------完了----------")
+        logger.info(f"----------summary: {audio_file}----------")
+        summary_text = summary(transcribed_text)
+        logger.info(summary_text)
+
+        output_path = OUTPUT_SUMMARY_FOLDER / f"{audio_file.stem}.txt"
+        with open(output_path, "w", encoding="utf-8") as f:
+            f.write(summary_text)
+
+        logger.info(f"----------完了: {audio_file}----------")
+
+    logger.info("全ての処理が完了しました")
+
+    sys.exit(0)
+
+
+def check_audio_files():
+    audio_files = [f for f in INPUT_AUDIO_FOLDER.iterdir() if f.is_file() and f.suffix.lower() in AUDIO_EXTENSIONS]
+    return audio_files
 
 
 if __name__ == "__main__":
