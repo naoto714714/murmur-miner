@@ -1,3 +1,4 @@
+import sys
 from pathlib import Path
 
 from remove_silence import remove_silence
@@ -11,24 +12,35 @@ SAMPLING_RATE = 16000
 
 
 def main():
-    for audio_file in INPUT_AUDIO_FOLDER.iterdir():
-        if audio_file.is_file() and audio_file.suffix.lower() in AUDIO_EXTENSIONS:
-            print("----------remove_silence----------")
-            no_silence_audio = remove_silence(audio_file, SAMPLING_RATE)
+    audio_files = check_audio_files()
+    if not audio_files:
+        print("音声ファイルが見つかりません。入力可能なファイル形式: mp3, wav, m4a")
+        sys.exit(1)
 
-            print("----------speech_to_text----------")
-            transcribed_text = speech_to_text(no_silence_audio, SAMPLING_RATE)
-            print(transcribed_text)
+    for audio_file in audio_files:
+        print("----------remove_silence----------")
+        no_silence_audio = remove_silence(audio_file, SAMPLING_RATE)
 
-            print("----------summary----------")
-            summary_text = summary(transcribed_text)
-            print(summary_text)
+        print("----------speech_to_text----------")
+        transcribed_text = speech_to_text(no_silence_audio, SAMPLING_RATE)
+        print(transcribed_text)
 
-            output_path = OUTPUT_SUMMARY_FOLDER / f"{audio_file.stem}.txt"
-            with open(output_path, "w", encoding="utf-8") as f:
-                f.write(summary_text)
+        print("----------summary----------")
+        summary_text = summary(transcribed_text)
+        print(summary_text)
 
-            print(f"----------{audio_file}: 完了----------")
+        output_path = OUTPUT_SUMMARY_FOLDER / f"{audio_file.stem}.txt"
+        with open(output_path, "w", encoding="utf-8") as f:
+            f.write(summary_text)
+
+        print(f"----------{audio_file}: 完了----------")
+
+    sys.exit(0)
+
+
+def check_audio_files():
+    audio_files = [f for f in INPUT_AUDIO_FOLDER.iterdir() if f.is_file() and f.suffix.lower() in AUDIO_EXTENSIONS]
+    return audio_files
 
 
 if __name__ == "__main__":
