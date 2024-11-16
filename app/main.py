@@ -1,3 +1,4 @@
+import logging
 import sys
 from pathlib import Path
 
@@ -10,30 +11,38 @@ OUTPUT_SUMMARY_FOLDER = Path("/workspaces/MurmurMiner/output_summaries")
 AUDIO_EXTENSIONS = [".mp3", ".wav", ".m4a"]
 SAMPLING_RATE = 16000
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+handler = logging.StreamHandler()
+handler.setLevel(logging.INFO)
+logger.addHandler(handler)
+
 
 def main():
     audio_files = check_audio_files()
     if not audio_files:
-        print("音声ファイルが見つかりません。入力可能なファイル形式: mp3, wav, m4a")
+        logger.warning("音声ファイルが見つかりません。入力可能なファイル形式: mp3, wav, m4a")
         sys.exit(1)
 
     for audio_file in audio_files:
-        print(f"----------remove_silence: {audio_file}----------")
+        logger.info(f"----------remove_silence: {audio_file}----------")
         no_silence_audio = remove_silence(audio_file, SAMPLING_RATE)
 
-        print(f"----------speech_to_text: {audio_file}----------")
+        logger.info(f"----------speech_to_text: {audio_file}----------")
         transcribed_text = speech_to_text(no_silence_audio, SAMPLING_RATE)
-        print(transcribed_text)
+        logger.info(transcribed_text)
 
-        print(f"----------summary: {audio_file}----------")
+        logger.info(f"----------summary: {audio_file}----------")
         summary_text = summary(transcribed_text)
-        print(summary_text)
+        logger.info(summary_text)
 
         output_path = OUTPUT_SUMMARY_FOLDER / f"{audio_file.stem}.txt"
         with open(output_path, "w", encoding="utf-8") as f:
             f.write(summary_text)
 
-        print(f"----------完了: {audio_file}----------")
+        logger.info(f"----------完了: {audio_file}----------")
+
+    logger.info("全ての処理が完了しました")
 
     sys.exit(0)
 
