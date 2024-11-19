@@ -4,6 +4,8 @@ import os
 import requests
 from dotenv import load_dotenv
 
+from utils import measure_time
+
 PROMPT = """
 これは会話の音声を文字起こししたものです。
 要約して、Markdown記法で以下のフォーマットで出力して。
@@ -20,6 +22,7 @@ PROMPT = """
 """
 
 
+@measure_time
 def summary(transcribed_text):
     load_dotenv()
     token = os.getenv("API_TOKEN")

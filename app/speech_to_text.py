@@ -4,7 +4,10 @@
 import torch
 from transformers import WhisperForConditionalGeneration, WhisperProcessor
 
+from utils import measure_time
 
+
+@measure_time
 def speech_to_text(audio, sampling_rate):
     model_id = "kotoba-tech/kotoba-whisper-v2.0"
     device = "cuda" if torch.cuda.is_available() else "cpu"
