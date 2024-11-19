@@ -1,5 +1,6 @@
 import logging
 import sys
+import time
 from pathlib import Path
 
 from remove_silence import remove_silence
@@ -25,22 +26,31 @@ def main():
         sys.exit(1)
 
     for audio_file in audio_files:
+        entire_start_time = time.time()
+
         logger.info(f"----------remove_silence: {audio_file}----------")
+        start_time = time.time()
         no_silence_audio = remove_silence(audio_file, SAMPLING_RATE)
+        logger.info(f"{(time.time() - start_time):.2f}秒")
 
         logger.info(f"----------speech_to_text: {audio_file}----------")
+        start_time = time.time()
         transcribed_text = speech_to_text(no_silence_audio, SAMPLING_RATE)
         logger.info(transcribed_text)
+        logger.info(f"{(time.time() - start_time):.2f}秒")
 
         logger.info(f"----------summary: {audio_file}----------")
+        start_time = time.time()
         summary_text = summary(transcribed_text)
         logger.info(summary_text)
+        logger.info(f"{(time.time() - start_time):.2f}秒")
 
         output_path = OUTPUT_SUMMARY_FOLDER / f"{audio_file.stem}.txt"
         with open(output_path, "w", encoding="utf-8") as f:
             f.write(summary_text)
 
         logger.info(f"----------完了: {audio_file}----------")
+        logger.info(f"完了時間：{(time.time() - entire_start_time):.2f}秒")
 
     logger.info("全ての処理が完了しました")
 
