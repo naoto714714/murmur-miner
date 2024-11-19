@@ -2,7 +2,7 @@ import logging
 import time
 from functools import wraps
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("main")
 
 
 def measure_time(func):

@@ -5,21 +5,19 @@ from pathlib import Path
 from remove_silence import remove_silence
 from speech_to_text import speech_to_text
 from summary import summary
-from utils import measure_time
 
 INPUT_AUDIO_FOLDER = Path("/workspaces/MurmurMiner/input_audios")
 OUTPUT_SUMMARY_FOLDER = Path("/workspaces/MurmurMiner/output_summaries")
 AUDIO_EXTENSIONS = [".mp3", ".wav", ".m4a"]
 SAMPLING_RATE = 16000
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("main")
 logger.setLevel(logging.INFO)
 handler = logging.StreamHandler()
 handler.setLevel(logging.INFO)
 logger.addHandler(handler)
 
 
-@measure_time
 def main():
     audio_files = check_audio_files()
     if not audio_files:
