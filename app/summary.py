@@ -4,12 +4,25 @@ import os
 import requests
 from dotenv import load_dotenv
 
+from utils import measure_time
+
 PROMPT = """
-これは会議の音声を文字起こししたものです。
-要約して。
+これは会話の音声を文字起こししたものです。
+要約して、Markdown記法で以下のフォーマットで出力して。
+
+## 【3行要約】
+- 会話全体を3行で要約
+
+## 【主要トピックス】
+### タイトル
+- 内容
+
+## 【その他】
+- 主要トピック以外の役立ちそうな話題を箇条書き
 """
 
 
+@measure_time
 def summary(transcribed_text):
     load_dotenv()
     token = os.getenv("API_TOKEN")
