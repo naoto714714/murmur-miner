@@ -34,6 +34,8 @@
    $ docker run --rm murmur
    ```
 
+5. `output_summaries`に要約が出力される
+
 ## 使用した技術
 - パッケージ管理：[uv](https://docs.astral.sh/uv/guides/integration/docker/)
 
