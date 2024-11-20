@@ -1,5 +1,5 @@
 # 参考：https://github.com/snakers4/silero-vad/wiki/Examples-and-Dependencies#examples
-from silero_vad import collect_chunks, get_speech_timestamps, load_silero_vad, read_audio, save_audio
+from silero_vad import collect_chunks, get_speech_timestamps, load_silero_vad, read_audio
 
 from utils import measure_time
 
