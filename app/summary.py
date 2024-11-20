@@ -34,10 +34,8 @@ def summary(transcribed_text):
             {"role": "system", "content": PROMPT},
             {"role": "user", "content": transcribed_text},
         ],
-        # "max_tokens": 1000,
         "temperature": 0.2,
         "top_p": 0.9,
-        # "search_domain_filter": ["perplexity.ai"],
         "return_images": False,
         "return_related_questions": False,
         "search_recency_filter": "month",
@@ -54,5 +52,4 @@ def summary(transcribed_text):
     response = requests.request("POST", url, json=payload, headers=headers)
 
     response_json = response.json()
-    content = response_json["choices"][0]["message"]["content"]
-    return content
+    return response_json["choices"][0]["message"]["content"]
